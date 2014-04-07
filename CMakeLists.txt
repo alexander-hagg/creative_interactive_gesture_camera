@@ -9,11 +9,20 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/g2o/cmake_module
 # find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation Eigen)
 find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation)
 find_package(eigen REQUIRED)
-find_package(Cholmod REQUIRED)
-FIND_PACKAGE(MRPT REQUIRED base)
+
+FIND_PACKAGE(mrpt REQUIRED base)
 message("-- MRPT FOUND: " ${MRPT_FOUND})
 message("-- MRPT_LIBRARIES: " ${MRPT_LIBRARIES}) 
 find_package(G2O REQUIRED)
+
+#find_package(Cholmod REQUIRED)
+FIND_PACKAGE(SuiteSparse)
+IF(CSPARSE_FOUND)
+  SET( BUILD_CSPARSE OFF CACHE BOOL "Build local CSparse library")
+ELSE(CSPARSE_FOUND)
+  SET( BUILD_CSPARSE ON CACHE BOOL "Build local CSparse library")
+  SET(CSPARSE_FOUND TRUE)
+ENDIF(CSPARSE_FOUND)
 
 set(MY_LIB ${G2O_CORE_LIBRARY} 
     ${G2O_STUFF_LIBRARY}

@@ -6,7 +6,9 @@ project(creative_interactive_gesture_camera)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/g2o/cmake_modules/")
-find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation Eigen)
+# find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation Eigen)
+find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation)
+find_package(eigen REQUIRED)
 find_package(Cholmod REQUIRED)
 FIND_PACKAGE(MRPT REQUIRED base)
 message("-- MRPT FOUND: " ${MRPT_FOUND})
@@ -110,6 +112,7 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN_INCLUDE_DIRS}
 )
 
 

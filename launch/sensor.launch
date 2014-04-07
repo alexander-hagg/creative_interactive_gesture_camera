@@ -1,17 +1,6 @@
 <launch>
-  <arg name="pi/2" value="1.5707963267948966" />
-  <arg name="optical_rotate" value="0 0 0 -$(arg pi/2) 0 -$(arg pi/2)" />
   
-  <node pkg="tf" type="static_transform_publisher" name="camera_rgb_frame_tf"
-        args="0 -0.045 0 0 0 0  /camera_link /camera_rgb_frame 40" />        
-
-  <node pkg="tf" type="static_transform_publisher" name="camera_rgb_optical_frame_tf"
-        args="$(arg optical_rotate) /camera_rgb_frame /camera_rgb_optical_frame 40" />  
-        
-  <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" 
-        args="0 0 0 0 0 0 /map /camera_link 40" />
-  
-  <node pkg="creative_interactive_gesture_camera" type="main" name="depth_cam" respawn="false"  required="true">
+  <node pkg="creative_interactive_gesture_camera" type="main" name="depth_cam" respawn="false"  required="true" launch-prefix="xterm -e gdb --args">
     <remap from="/points2" to="/depth_registered/pointsRGB" /> <!-- output -->
     <remap from="/points_xyz" to="/camera/depth/image_raw" /> <!-- output -->
     <remap from="/rgb_data" to="/camera/rgb/image_raw"/> <!-- output -->
@@ -25,29 +14,11 @@
     <remap from="/points2" to="/depth_registered/points" /> --> <!-- input -->
  <!-- </node> -->
   
-  <node pkg="rviz" type="rviz" name="rviz" args="-d /home/common/catkin_ws/src/creative_interactive_gesture_camera/src/rvizconfig.rviz" respawn="false"  required="true">
-  </node>
-  
-  <node pkg="image_view" type="image_view" name="image_view" args="image:=/rgb/image_raw" respawn="false"  required="true">
-  </node> 
-  <node pkg="image_view" type="image_view" name="image_view_mono" args="image:=/mono/image_raw" respawn="false"  required="true">
-  </node> 
-  
-  <node pkg="creative_interactive_gesture_camera" type="point_cloud_avg" name="point_cloud_avg" respawn="false"  required="true">
-    <remap from="/points2" to="/depth_registered/pointsRGB" /> <!-- input -->
-    <remap from="/transform_points2" to="/depth_registered/averaged/pointsRGB" /> <!-- output -->
-  </node>
-  
   <node pkg="creative_interactive_gesture_camera" type="camera_sync" name="camera_sync" respawn="false"  required="true">
     <remap from="/rgb_image" to="/camera/rgb/image_raw" /> <!-- input -->
     <remap from="/camera_info" to="/camera/rgb/camera_info" /> <!-- input -->
     <remap from="/point_cloud" to="/depth_registered/pointsRGB" /> <!-- input -->
     <remap from="/points2_image" to="/depth_registered/points_imageRGB" /> <!-- output -->
-  </node>
-  
-  <!-- Run compareDepthImage for depth image debugging -->
-  <node pkg="creative_interactive_gesture_camera" type="compareDepthImage" name="compareDepthImage" respawn="false"  required="true">
-    <remap from="depth_image" to="/camera/depth/points/image_raw" /> <!-- input -->
   </node>
   
   <node pkg="nodelet" type="nodelet" name="rgb_proc_nodelet" 
@@ -74,13 +45,5 @@
         args="set /mono_proc_nodelet decimation_y 3">
   </node>
   
- <!-- <node pkg="image_view" type="image_view" name="image_view2" args="image:=/rgb_downsampled/image_raw" respawn="false"  required="true">
-  </node> 
-  
-  <node pkg="image_view" type="image_view" name="image_viewmono2" args="image:=/mono_downsampled/image_raw" respawn="false"  required="true">
-  </node> 
-  
-  <node pkg="image_view" type="image_view" name="image_view3" args="image:=/depth_registered/points_imageRGB" respawn="false"  required="true">
-  </node> -->
   
 </launch>

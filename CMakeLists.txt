@@ -1,19 +1,23 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(creative_interactive_gesture_camera)
 
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/home/common/catkin_ws/src/creative_interactive_gesture_camera/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "~/ros_ws/robocup/src/creative_interactive_gesture_camera/:")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/g2o/cmake_modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/g2o/cmake_modules:")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/mrpt/MRPTConfig.cmake")
+message("Hellooooooooooo Oscar")
+message(${CMAKE_MODULE_PATH})
+message("ciaaaaaaaaao")
 # find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation Eigen)
 find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation)
 find_package(eigen REQUIRED)
 
-FIND_PACKAGE(mrpt REQUIRED base)
+FIND_PACKAGE(MRPT REQUIRED base)
 message("-- MRPT FOUND: " ${MRPT_FOUND})
 message("-- MRPT_LIBRARIES: " ${MRPT_LIBRARIES}) 
-find_package(G2O REQUIRED)
+#find_package(G2O REQUIRED)
 
 #find_package(Cholmod REQUIRED)
 FIND_PACKAGE(SuiteSparse)
@@ -172,7 +176,34 @@ add_executable(SLAM src/SLAM.cpp
                      src/VisualFeatureMatcher_Generic.cpp
                      src/Visual3DRigidTransformationEstimator_RANSAC.cpp
                      src/ICPPoseRefiner_PCL.cpp)#
-target_link_libraries(SLAM DepthSense ${MY_LIB} ${catkin_LIBRARIES})
+target_link_libraries(SLAM DepthSense ${MY_LIB} ${catkin_LIBRARIES}
+/opt/ros/hydro/lib/libg2o_cli.so
+/opt/ros/hydro/lib/libg2o_core.so
+/opt/ros/hydro/lib/libg2o_csparse_extension.so
+/opt/ros/hydro/lib/libg2o_ext_freeglut_minimal.so
+/opt/ros/hydro/lib/libg2o_incremental.so
+/opt/ros/hydro/lib/libg2o_interactive.so
+/opt/ros/hydro/lib/libg2o_interface.so
+/opt/ros/hydro/lib/libg2o_opengl_helper.so
+/opt/ros/hydro/lib/libg2o_parser.so
+/opt/ros/hydro/lib/libg2o_simulator.so
+/opt/ros/hydro/lib/libg2o_solver_cholmod.so
+/opt/ros/hydro/lib/libg2o_solver_csparse.so
+/opt/ros/hydro/lib/libg2o_solver_dense.so
+/opt/ros/hydro/lib/libg2o_solver_pcg.so
+/opt/ros/hydro/lib/libg2o_solver_slam2d_linear.so
+/opt/ros/hydro/lib/libg2o_solver_structure_only.so
+/opt/ros/hydro/lib/libg2o_stuff.so
+/opt/ros/hydro/lib/libg2o_types_data.so
+/opt/ros/hydro/lib/libg2o_types_icp.so
+/opt/ros/hydro/lib/libg2o_types_sba.so
+/opt/ros/hydro/lib/libg2o_types_sclam2d.so
+/opt/ros/hydro/lib/libg2o_types_sim3.so
+/opt/ros/hydro/lib/libg2o_types_slam2d.so
+/opt/ros/hydro/lib/libg2o_types_slam3d.so
+/opt/ros/hydro/share/libg2o
+/usr/lib/libcholmod.so
+)
 add_dependencies(SLAM beginner_tutorials_generate_message_cpp)
 
 #add_executable(pairwiseAlignment src/pairwiseAlignment.cpp
